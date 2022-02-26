@@ -4,17 +4,22 @@ import time
 
 webURL = 'https://www.huasengheng.com/category/review/'
 webURL2 = 'https://www.goldtraders.or.th//'
+webURL3 = 'https://www.dailyfx.com/gold-price'
 r = requests.get(webURL)
 r.encoding = 'utf-8'
 p = requests.get(webURL2)
 p.encoding = 'utf-8'
+o = requests.get(webURL3)
+o.encoding = 'utf-8'
 soup = BeautifulSoup(r.text, 'lxml')
 sup = BeautifulSoup(p.text, 'lxml')
+sp = BeautifulSoup(o.text, 'lxml')
 
 Linetoken = 'bsvOIVbilEBaJ60ZERWH2MK3NKrgUCFlV9W7iikER37'
 
 Lastupdate = " "
 Dataupdate = " "
+Supplyupdate = " "
 
 def LineNotifyMessage(message):
     payload = {'message': message}
@@ -36,17 +41,29 @@ def GoldPriceCheck():
     lblBLSell = sup.find(id = 'DetailPlace_uc_goldprices1_lblBLSell').text
     lblBLBuy = sup.find(id = 'DetailPlace_uc_goldprices1_lblBLBuy').text
 
+def DailyfxReport():
+    global price
+    price = sp.find(class_ = 'dfx-pivotPointsComponent__tableRow dfx-pivotPointsComponent__tableRow--noHover row mx-0 dfx-font-size-3').text
+
 
 while True:
-    HuasenghengReport()
     GoldPriceCheck()
-    if Report != Lastupdate :
-        LineNotifyMessage("บทวิเคราะห์ใหม่จากHuasenghengมาแล้ว")
-        Lastupdate = Report
+    HuasenghengReport()
+    DailyfxReport()
+
     if Dataupdate != lblAsTime:
         LineNotifyMessage("ราคาทองตามประกาศของสมาคมค้าทองคำ"+"\n"
         +"ประจำวันที่ "+lblAsTime+"\n"+"ทองคำแท่ง 96.5%\n"+
         "ขายออก "+ lblBLSell+" บาท\n"+"รับซื้อ "+ lblBLBuy+" บาท")
         Dataupdate = lblAsTime
+
+    if Report != Lastupdate :
+        LineNotifyMessage("บทวิเคราะห์ใหม่จากHuasenghengมาแล้ว")
+        Lastupdate = Report
+    
+    if price != Supplyupdate :
+        LineNotifyMessage("แนวรับแน้วต้านย่อย"+"\n"+price)
+        Supplyupdate = price
+
     time.sleep(60)
     
