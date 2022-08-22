@@ -8,7 +8,7 @@ r = requests.get(webURL)
 r.encoding = 'utf-8'
 soup = BeautifulSoup(r.text, 'lxml')
 
-linetoken = 'bsvOIVbilEBaJ60ZERWH2MK3NKrgUCFlV9W7iikER37'
+linetoken = ''
 
 Lastupdate = " "
 
