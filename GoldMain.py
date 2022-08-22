@@ -15,7 +15,7 @@ soup = BeautifulSoup(r.text, 'lxml')
 sup = BeautifulSoup(p.text, 'lxml')
 sp = BeautifulSoup(o.text, 'lxml')
 
-Linetoken = 'bsvOIVbilEBaJ60ZERWH2MK3NKrgUCFlV9W7iikER37'
+Linetoken = ''
 
 Lastupdate = " "
 Dataupdate = " "
